@@ -9,11 +9,21 @@
 import UIKit
 import SceneKit
 
-class GameViewController: UIViewController {
+enum GameState {
+    case loading, playing
+}
 
+class GameViewController: UIViewController {
+    
+    var gameView: GameView { return view as! GameView }
+    var mainScene: SCNScene!
+    var gameState: GameState = .loading
+    
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupScene()
+        gameState = .playing
     }
     
     override var shouldAutorotate: Bool { return true }
@@ -29,6 +39,14 @@ class GameViewController: UIViewController {
     }
     
     //MARK: Scene
+    
+    private func setupScene() {
+        gameView.allowsCameraControl = true
+        gameView.antialiasingMode = .multisampling4X
+        mainScene = SCNScene(named: "art.scnassets/Scenes/Stage1.scn") //load Stage1.scn as our mainScene
+        gameView.scene = mainScene
+        gameView.isPlaying = true //start game loop and animation
+    }
     
     //MARK: Walls
     
