@@ -25,6 +25,13 @@ class Player: SCNNode {
     //movement
     private var previousUpdateTime = TimeInterval(0.0)
     private var isWalking: Bool = false
+    private var directionAngle: Float = 0.0 {
+        didSet {
+            if directionAngle != oldValue { //if new value is different from the old value
+                runAction(SCNAction.rotateTo(x: 0.0, y: CGFloat(directionAngle), z: 0.0, duration: 0.1, usesShortestUnitArc: true))
+            }
+        }
+    }
     
     //MARK: Initialization
     override init() {
@@ -83,20 +90,17 @@ class Player: SCNNode {
     func walkInDirection(_ direction: float3, time: TimeInterval, scene: SCNScene) {
 //        if isDead || isAttacking { return }
         if previousUpdateTime == 0.0 { previousUpdateTime = time } //update previousUpdateTime with time parameter
-        
         let deltaTime = Float(min(time - previousUpdateTime, 1.0 / 60.0)) //because we want to achieve 60 FPS in our game
         let characterSpeed = deltaTime * 1.3 //get character speed
         previousUpdateTime = time //update time
-        
 //        let initialPosition = position
-        
         //move
         if direction.x != 0.0 && direction.z != 0.0 { //check there is change on directions
             //move character
             let pos = float3(position)
             position = SCNVector3(pos + direction * characterSpeed)
             //update angle
-//            directionAngle = SCNFloat(atan2f(direction.x, direction.z))
+            directionAngle = SCNFloat(atan2f(direction.x, direction.z))
             isWalking = true
         } else {
             isWalking = false
