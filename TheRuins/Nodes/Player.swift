@@ -22,6 +22,10 @@ class Player: SCNNode {
     private var attack1Animation = CAAnimation()
     private var deadAnimation = CAAnimation()
     
+    //movement
+    private var previousUpdateTime = TimeInterval(0.0)
+    private var isWalking: Bool = false
+    
     //MARK: Initialization
     override init() {
         super.init()
@@ -73,6 +77,50 @@ class Player: SCNNode {
             animationObject.isRemovedOnCompletion = false
             deadAnimation = animationObject
         }
+    }
+    
+    //MARK:- movement
+    func walkInDirection(_ direction: float3, time: TimeInterval, scene: SCNScene) {
+//        if isDead || isAttacking { return }
+        if previousUpdateTime == 0.0 { previousUpdateTime = time } //update previousUpdateTime with time parameter
+        
+        let deltaTime = Float(min(time - previousUpdateTime, 1.0 / 60.0)) //because we want to achieve 60 FPS in our game
+        let characterSpeed = deltaTime * 1.3 //get character speed
+        previousUpdateTime = time //update time
+        
+//        let initialPosition = position
+        
+        //move
+        if direction.x != 0.0 && direction.z != 0.0 { //check there is change on directions
+            //move character
+            let pos = float3(position)
+            position = SCNVector3(pos + direction * characterSpeed)
+            //update angle
+//            directionAngle = SCNFloat(atan2f(direction.x, direction.z))
+            isWalking = true
+        } else {
+            isWalking = false
+        }
+        //update altidute
+//        var pos = position
+//        var endpoint0 = pos
+//        var endpoint1 = pos
+//        endpoint0.y -= 0.1
+//        endpoint1.y += 0.08
+//
+//        let results = scene.physicsWorld.rayTestWithSegment(from: endpoint1, to: endpoint0, options: [.collisionBitMask: BitmaskWall, .searchMode: SCNPhysicsWorld.TestSearchMode.closest])
+//
+//        if let result = results.first {
+//
+//            let groundAltidute = result.worldCoordinates.y
+//            pos.y = groundAltidute
+//
+//            position = pos
+//
+//        } else {
+//
+//            position = initialPosition
+//        }
     }
 }
 

@@ -15,7 +15,7 @@ enum GameState {
 
 class GameViewController: UIViewController {
     
-    var gameView: GameView { return view as! GameView }
+    lazy var gameView: GameView = { return view as! GameView }()
     var mainScene: SCNScene!
     var gameState: GameState = .loading
     //nodes
@@ -28,8 +28,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScene()
-        gameState = .playing
         setupPlayer()
+        
+        gameState = .playing
     }
     
     override var shouldAutorotate: Bool { return true }
@@ -47,13 +48,14 @@ class GameViewController: UIViewController {
     //MARK: Scene
     
     private func setupScene() {
-        //gameView.allowsCameraControl = true
+        gameView.allowsCameraControl = true
         gameView.antialiasingMode = .multisampling4X
         gameView.delegate = self
 //        mainScene.physicsWorld.contactDelegate = self
         mainScene = SCNScene(named: "art.scnassets/Scenes/Stage1.scn") //load Stage1.scn as our mainScene
         gameView.scene = mainScene
         gameView.isPlaying = true //start game loop and animation
+        
     }
     
     //MARK: Walls
@@ -108,7 +110,6 @@ class GameViewController: UIViewController {
     }
     
     private func characterDirection() -> float3 {
-        
         var direction = float3(controllerStoredDirection.x, 0.0, controllerStoredDirection.y) //used 3 to make calculations faster
         if let pov = gameView.pointOfView { //pointOfView is what user sees in the camera
             let p1 = pov.presentation.convertPosition(SCNVector3(direction), to: nil) //convert the direction
@@ -148,20 +149,20 @@ extension GameViewController: SCNSceneRendererDelegate {
         let scene = gameView.scene!
         let direction = characterDirection()
         
-//        player!.walkInDirection(direction, time: time, scene: scene)
-//        
+        player!.walkInDirection(direction, time: time, scene: scene)
+//
 //        updateFollowersPositions()
-//        
+//
 //        //golems
 //        mainScene.rootNode.enumerateChildNodes { (node, _) in
-//            
+//
 //            if let name = node.name {
-//                
+//
 //                switch name {
-//                
+//
 //                case "Golem":
 //                    (node as! Golem).update(with: time, and: scene)
-//                    
+//
 //                default:
 //                    break
 //                }
