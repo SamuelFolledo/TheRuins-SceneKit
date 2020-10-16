@@ -49,7 +49,7 @@ class Player: SCNNode {
     func loadAnimations() {
         loadAnimation(animationType: .walk, inSceneNamed: "art.scnassets/Scenes/Hero/walk", withIdentifier: "WalkID")
         loadAnimation(animationType: .attack1, inSceneNamed: "art.scnassets/Scenes/Hero/attack", withIdentifier: "attackID")
-        loadAnimation(animationType: .dead, inSceneNamed: "art.scnassets/Scenes/Hero/dead", withIdentifier: "DeathID")
+        loadAnimation(animationType: .dead, inSceneNamed: "art.scnassets/Scenes/Hero/die", withIdentifier: "DeathID")
     }
     
     private func loadAnimation(animationType: PlayerAnimationType, inSceneNamed scene: String, withIdentifier identifier: String) {

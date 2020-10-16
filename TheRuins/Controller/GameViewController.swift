@@ -18,7 +18,11 @@ class GameViewController: UIViewController {
     var gameView: GameView { return view as! GameView }
     var mainScene: SCNScene!
     var gameState: GameState = .loading
+    //nodes
     private var player: Player!
+    //movement
+    private var controllerStoredDirection = float2(0.0) //used for parallel programming
+    private var padTouch: UITouch? //will hold user's touch whenever use touch inside the pad
     
     //MARK: App Life Cycle
     override func viewDidLoad() {
@@ -65,6 +69,36 @@ class GameViewController: UIViewController {
     }
     
     //MARK: Touches + Movements
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        for touch in touches {
+            if gameView.virtualDpadBounds().contains(touch.location(in: gameView)) { //detect if user touch the dpad
+                if padTouch == nil {
+                    padTouch = touch
+                    controllerStoredDirection = float2(0.0)
+                }
+            }
+        }
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let touch = padTouch {
+            let displacement = float2(touch.location(in: view)) - float2(touch.previousLocation(in: view))
+            let vMix = mix(controllerStoredDirection, displacement, t: 0.1)
+            let vClamp = clamp(vMix, min: -1.0, max: 1.0)
+            controllerStoredDirection = vClamp
+            print(controllerStoredDirection)
+        }
+//        else if let touch = cameraTouch {
+//            let displacement = float2(touch.location(in: view)) - float2(touch.previousLocation(in: view))
+//            panCamera(displacement)
+//        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        padTouch = nil
+        controllerStoredDirection = float2(0.0)
+    }
     
     //MARK: Game Loop Functions
     
