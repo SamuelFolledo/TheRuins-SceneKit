@@ -47,8 +47,10 @@ class GameViewController: UIViewController {
     //MARK: Scene
     
     private func setupScene() {
-        gameView.allowsCameraControl = true
+        //gameView.allowsCameraControl = true
         gameView.antialiasingMode = .multisampling4X
+        gameView.delegate = self
+//        mainScene.physicsWorld.contactDelegate = self
         mainScene = SCNScene(named: "art.scnassets/Scenes/Stage1.scn") //load Stage1.scn as our mainScene
         gameView.scene = mainScene
         gameView.isPlaying = true //start game loop and animation
@@ -100,9 +102,70 @@ class GameViewController: UIViewController {
         controllerStoredDirection = float2(0.0)
     }
     
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        padTouch = nil
+        controllerStoredDirection = float2(0.0)
+    }
+    
+    private func characterDirection() -> float3 {
+        
+        var direction = float3(controllerStoredDirection.x, 0.0, controllerStoredDirection.y) //used 3 to make calculations faster
+        if let pov = gameView.pointOfView { //pointOfView is what user sees in the camera
+            let p1 = pov.presentation.convertPosition(SCNVector3(direction), to: nil) //convert the direction
+            let p0 = pov.presentation.convertPosition(SCNVector3Zero, to: nil)
+            direction = float3(Float(p1.x-p0.x), 0.0, Float(p1.z-p0.z))
+            if direction.x != 0.0 || direction.z != 0.0 { //normalize if not 0
+                direction = normalize(direction)
+            }
+        }
+        return direction
+    }
+    
     //MARK: Game Loop Functions
     
     //MARK: Enemies
 }
 
 //MARK: Extensions
+
+//MARK: SCNSceneRendererDelegate
+extension GameViewController: SCNSceneRendererDelegate {
+    
+//    func renderer(_ renderer: SCNSceneRenderer, didSimulatePhysicsAtTime time: TimeInterval) {
+//        if gameState != .playing { return }
+//        for (node,position) in replacementPositions {
+//            node.position = position
+//        }
+//    }
+    
+    func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+        if gameState != .playing { return }
+        
+        //reset
+//        replacementPositions.removeAll()
+//        maxPenetrationDistance = 0.0
+        
+        let scene = gameView.scene!
+        let direction = characterDirection()
+        
+//        player!.walkInDirection(direction, time: time, scene: scene)
+//        
+//        updateFollowersPositions()
+//        
+//        //golems
+//        mainScene.rootNode.enumerateChildNodes { (node, _) in
+//            
+//            if let name = node.name {
+//                
+//                switch name {
+//                
+//                case "Golem":
+//                    (node as! Golem).update(with: time, and: scene)
+//                    
+//                default:
+//                    break
+//                }
+//            }
+//        }
+    }
+}
