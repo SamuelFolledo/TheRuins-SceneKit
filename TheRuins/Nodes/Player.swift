@@ -29,8 +29,11 @@ class Player: SCNNode {
         let playerUrl = Bundle.main.url(forResource: "art.scnassets/Scenes/Hero/idle", withExtension: "dae")
         let playerScene = try! SCNScene(url: playerUrl!, options: nil)
         for child in playerScene.rootNode.childNodes {
+            print("Got chiild \(child.name)")
             daeHolderNode.addChildNode(child)
         }
         addChildNode(daeHolderNode)
+        characterNode = daeHolderNode.childNode(withName: "Bip01", recursively: true)! //Bip01 is the bone of the dae file
+        
     }
 }

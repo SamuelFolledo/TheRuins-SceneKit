@@ -18,12 +18,14 @@ class GameViewController: UIViewController {
     var gameView: GameView { return view as! GameView }
     var mainScene: SCNScene!
     var gameState: GameState = .loading
+    private var player: Player!
     
     //MARK: App Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupScene()
         gameState = .playing
+        setupPlayer()
     }
     
     override var shouldAutorotate: Bool { return true }
@@ -53,6 +55,14 @@ class GameViewController: UIViewController {
     //MARK: Camera
     
     //MARK: Player
+    
+    private func setupPlayer() {
+        player = Player()
+        player.scale = SCNVector3Make(0.0026, 0.0026, 0.0026)
+        player.position = SCNVector3Make(0, 0, 0)
+        player.rotation = SCNVector4Make(0, 1, 0, Float.pi)
+        mainScene.rootNode.addChildNode(player)
+    }
     
     //MARK: Touches + Movements
     

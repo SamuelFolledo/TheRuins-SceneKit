@@ -64,8 +64,8 @@
 				33DCD01024F1DE0E000E9430 /* Helpers */,
 				33DCD00F24F1DDF6000E9430 /* Nodes */,
 				33DCD00124F1DBC8000E9430 /* Main.storyboard */,
-				33DCCFFF24F1DBC8000E9430 /* GameViewController.swift */,
-				33DCD01124F1DE37000E9430 /* GameView.swift */,
+				54ADD52C253950350070DDAE /* Controller */,
+				54ADD52A2539502B0070DDAE /* Views */,
 				33DCCFFD24F1DBC8000E9430 /* art.scnassets */,
 				33DCD00424F1DBCA000E9430 /* Assets.xcassets */,
 				33DCD00624F1DBCA000E9430 /* LaunchScreen.storyboard */,
@@ -87,6 +87,22 @@
 			children = (
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		54ADD52A2539502B0070DDAE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				33DCD01124F1DE37000E9430 /* GameView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		54ADD52C253950350070DDAE /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				33DCCFFF24F1DBC8000E9430 /* GameViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
