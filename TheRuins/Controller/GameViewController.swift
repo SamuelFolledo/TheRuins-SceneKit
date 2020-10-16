@@ -48,14 +48,13 @@ class GameViewController: UIViewController {
     //MARK: Scene
     
     private func setupScene() {
-        gameView.allowsCameraControl = true
+//        gameView.allowsCameraControl = true
         gameView.antialiasingMode = .multisampling4X
         gameView.delegate = self
 //        mainScene.physicsWorld.contactDelegate = self
         mainScene = SCNScene(named: "art.scnassets/Scenes/Stage1.scn") //load Stage1.scn as our mainScene
         gameView.scene = mainScene
         gameView.isPlaying = true //start game loop and animation
-        
     }
     
     //MARK: Walls
@@ -91,7 +90,6 @@ class GameViewController: UIViewController {
             let vMix = mix(controllerStoredDirection, displacement, t: 0.1)
             let vClamp = clamp(vMix, min: -1.0, max: 1.0)
             controllerStoredDirection = vClamp
-            print(controllerStoredDirection)
         }
 //        else if let touch = cameraTouch {
 //            let displacement = float2(touch.location(in: view)) - float2(touch.previousLocation(in: view))
@@ -141,28 +139,20 @@ extension GameViewController: SCNSceneRendererDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         if gameState != .playing { return }
-        
         //reset
 //        replacementPositions.removeAll()
 //        maxPenetrationDistance = 0.0
-        
         let scene = gameView.scene!
         let direction = characterDirection()
-        
+//        print("Direction = \(direction)")
         player!.walkInDirection(direction, time: time, scene: scene)
-//
 //        updateFollowersPositions()
-//
 //        //golems
 //        mainScene.rootNode.enumerateChildNodes { (node, _) in
-//
 //            if let name = node.name {
-//
 //                switch name {
-//
 //                case "Golem":
 //                    (node as! Golem).update(with: time, and: scene)
-//
 //                default:
 //                    break
 //                }

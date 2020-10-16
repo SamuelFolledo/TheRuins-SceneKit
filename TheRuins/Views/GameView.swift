@@ -46,11 +46,11 @@ class GameView: SCNView {
         setupAttackButton(with: skScene)
         setupHpBar(with: skScene)
         overlaySKScene = skScene
-        skScene.isUserInteractionEnabled = true
+        skScene.isUserInteractionEnabled = false
     }
     
     fileprivate func layout2DOverlay() {
-        overlayNode.position = CGPoint(x: 0, y: sceneHeight)
+        overlayNode.position = CGPoint(x: 0, y: bounds.size.height)
 //        attackButtonSprite.position = CGPoint(x: sceneHeight - 110.0, y: 50)
 //        hpBar.position = CGPoint(x: 15, y: sceneWidth - 35)
     }
@@ -70,9 +70,8 @@ class GameView: SCNView {
     
     //returns the boundary of the dpad
     func virtualDpadBounds() -> CGRect {
-        print("DPAD bounds", bounds)
         var virtualDpadBounds = CGRect(x: 10, y: 10, width: 150, height: 150)
-        virtualDpadBounds.origin.y = sceneHeight - virtualDpadBounds.size.height + virtualDpadBounds.origin.y
+        virtualDpadBounds.origin.y = bounds.size.height - virtualDpadBounds.size.height + virtualDpadBounds.origin.y
         return virtualDpadBounds
     }
     
