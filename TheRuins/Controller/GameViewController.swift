@@ -20,6 +20,10 @@ class GameViewController: UIViewController {
     var gameState: GameState = .loading
     //nodes
     private var player: Player!
+    private var cameraStick:SCNNode!
+    private var cameraXHolder:SCNNode!
+    private var cameraYHolder:SCNNode!
+    private var lightStick:SCNNode!
     //movement
     private var controllerStoredDirection = float2(0.0) //used for parallel programming
     private var padTouch: UITouch? //will hold user's touch whenever use touch inside the pad
@@ -29,7 +33,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         setupScene()
         setupPlayer()
-        
+        setupCamera()
         gameState = .playing
     }
     
@@ -60,7 +64,11 @@ class GameViewController: UIViewController {
     //MARK: Walls
     
     //MARK: Camera
-    
+    private func setupCamera() {
+        cameraStick = mainScene.rootNode.childNode(withName: "CameraStick", recursively: false)!
+        cameraXHolder = mainScene.rootNode.childNode(withName: "xHolder", recursively: true)!
+        cameraYHolder = mainScene.rootNode.childNode(withName: "yHolder", recursively: true)!
+    }
     //MARK: Player
     
     private func setupPlayer() {
